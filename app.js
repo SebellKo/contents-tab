@@ -54,10 +54,7 @@ tab.forEach(function(item) {
         event.currentTarget.classList.add('active');
         if (event.currentTarget.className == 'recent active') {
             currentContents = recentContents;
-            str = '';
-            startNum = 0;
-            endNum = 10;
-            listWrapper.innerHTML = ''
+            resetState()
             loadingImg();
             setTimeout(function() {
                 listWrapper.innerHTML = addContents(recentContents, startNum, endNum);
@@ -65,10 +62,7 @@ tab.forEach(function(item) {
         }
         else if (event.currentTarget.className == 'popular active') {
             currentContents = popularContents;
-            str = '';
-            startNum = 0;
-            endNum = 10;
-            listWrapper.innerHTML = ''
+            resetState()
             loadingImg();
             setTimeout(function() {
                 listWrapper.innerHTML = addContents(popularContents, startNum, endNum);
@@ -76,10 +70,7 @@ tab.forEach(function(item) {
         }
         else if (event.currentTarget.className == 'view active') {
             currentContents = viewContents;
-            str = '';
-            startNum = 0;
-            endNum = 10;
-            listWrapper.innerHTML = ''
+            resetState()
             loadingImg();
             setTimeout(function() {
                 listWrapper.innerHTML = addContents(viewContents, startNum, endNum);
@@ -88,6 +79,12 @@ tab.forEach(function(item) {
     });
 })
 
+function resetState() {
+    str = '';
+    startNum = 0;
+    endNum = 10;
+    listWrapper.innerHTML = ''
+}
 
 function loadingImg() {
     loading.style.visibility = 'visible';
