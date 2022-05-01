@@ -7,27 +7,27 @@ const loading = document.querySelector('#loading');
 
 // 콘텐츠 탭 구현, 각 탭 선택되면 선택된 탭 class 적용, 각 콘텐츠 노출시에 로딩이미지 1초
 // 각 탭 누를때마다 해당 JSON 사용 결과표시, 가져온 데이터 list에 노출, 제목,링크이미지,CP 표시
-// 10개씩 보여주고 더보기 클릭시 10개 추가 및 로딩 이미지 = 마지막 차일드에 로딩 추가 삭제
+// 10개씩 보여주고 더보기 클릭시 10개 추가 및 로딩 이미지
 
 let startNum = 0;
 let endNum = 10;
 let str = ``;
 let currentContents = [];
 let listWrapper = document.createElement('div');
-let isEnd = false;
 listWrapper.className = 'listWrapper';
+
 
 list.prepend(listWrapper);
 loading.style.visibility = 'hidden';
 
 
-function addContents(contents, startNum, endNum) {
+const addContents = (contents, startNum, endNum) => {
     str = '';
     for (let i = startNum; i < endNum ; i++) {
         if (contents[i]) {
             str += `<div>
             <img src='${contents[i].img}'>
-            <div>${contents[i].title}</div>
+            <h3>${contents[i].title}</h3>
             <div>${contents[i].cp}</div>
             </div>`
         }
@@ -35,7 +35,7 @@ function addContents(contents, startNum, endNum) {
     return str;
 }
 
-function clickBtn() {
+const clickBtn = () => {
     startNum += 10;
     endNum += 10;
     loadingImg();
@@ -44,39 +44,7 @@ function clickBtn() {
     }, 1000);
 }
 
-btn.addEventListener('click', clickBtn);
-
-tab.forEach(function(item) {
-    item.addEventListener('click' , function(event) {
-        for(let i = 0 ; i < tabMenu.childElementCount; i++) {
-            tabMenu.children[i].classList.remove('active');
-        }
-        event.currentTarget.classList.add('active');
-        if (event.currentTarget.className == 'recent active') {
-            currentContents = recentContents;
-            resetState()
-            setTimeout(function() {
-                listWrapper.innerHTML = addContents(recentContents, startNum, endNum);
-            }, 1000);
-        }
-        else if (event.currentTarget.className == 'popular active') {
-            currentContents = popularContents;
-            resetState()
-            setTimeout(function() {
-                listWrapper.innerHTML = addContents(popularContents, startNum, endNum);
-            }, 1000);
-        }
-        else if (event.currentTarget.className == 'view active') {
-            currentContents = viewContents;
-            resetState()
-            setTimeout(function() {
-                listWrapper.innerHTML = addContents(viewContents, startNum, endNum);
-            }, 1000);
-        }
-    });
-})
-
-function resetState() {
+const resetState = () => {
     str = '';
     startNum = 0;
     endNum = 10;
@@ -84,9 +52,48 @@ function resetState() {
     loadingImg();
 }
 
-function loadingImg() {
+const loadingImg = () => {
     loading.style.visibility = 'visible';
     setTimeout(function() {
         loading.style.visibility = 'hidden';
     }, 1000);
 }
+
+const activeClass = () => {
+    for(let i = 0 ; i < tabMenu.childElementCount; i++) {
+        tabMenu.children[i].classList.remove('active');
+    }
+}
+
+function init() {
+    tab.forEach(function(item) {
+        item.addEventListener('click' , (event) => {
+            activeClass();
+            event.currentTarget.classList.add('active');
+            if (event.currentTarget.className == 'recent active') {
+                currentContents = [...recentContents];
+                resetState()
+                setTimeout(() => {
+                    listWrapper.innerHTML = addContents(recentContents, startNum, endNum);
+                }, 1000);
+            }
+            else if (event.currentTarget.className == 'popular active') {
+                currentContents = [...popularContents];
+                resetState()
+                setTimeout(() => {
+                    listWrapper.innerHTML = addContents(popularContents, startNum, endNum);
+                }, 1000);
+            }
+            else if (event.currentTarget.className == 'view active') {
+                currentContents = [...viewContents];
+                resetState()
+                setTimeout(() => {
+                    listWrapper.innerHTML = addContents(viewContents, startNum, endNum);
+                }, 1000);
+            }
+        });
+    })
+}
+
+init();
+btn.addEventListener('click', clickBtn);
