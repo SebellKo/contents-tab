@@ -49,6 +49,7 @@ const resetState = () => {
     startNum = 0;
     endNum = 10;
     listWrapper.innerHTML = ''
+    currentContents.length = 0;
     loadingImg();
 }
 
@@ -71,22 +72,22 @@ function init() {
             activeClass();
             event.currentTarget.classList.add('active');
             if (event.currentTarget.className == 'recent active') {
+                resetState();
                 currentContents = [...recentContents];
-                resetState()
                 setTimeout(() => {
                     listWrapper.innerHTML = addContents(recentContents, startNum, endNum);
                 }, 1000);
             }
             else if (event.currentTarget.className == 'popular active') {
+                resetState();
                 currentContents = [...popularContents];
-                resetState()
                 setTimeout(() => {
                     listWrapper.innerHTML = addContents(popularContents, startNum, endNum);
                 }, 1000);
             }
             else if (event.currentTarget.className == 'view active') {
+                resetState();
                 currentContents = [...viewContents];
-                resetState()
                 setTimeout(() => {
                     listWrapper.innerHTML = addContents(viewContents, startNum, endNum);
                 }, 1000);
